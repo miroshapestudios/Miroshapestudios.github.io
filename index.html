@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Miroshape Studios - Estudio premium de animación y producción 3D. Creación de personajes, escenarios, props, VR, AR y proyectos independientes.">
+    <title>Miroshape Studios | Animación 3D y Producción Premium</title>
+    
+    <!-- Google Fonts: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Three.js y GLTF 3D Loader para renderizado interactivo de MiroShape.glb -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="miro_model_data.js"></script>
+</head>
+<body>
+
+    <!-- Fondo interactivo Mesh Gradient (Canvas WebGL/2D) -->
+    <canvas id="mesh-canvas"></canvas>
+
+    <!-- Siluetas transparentes de la mascota flotando de fondo -->
+    <div class="bg-decoration-character char-dec-1">
+        <img src="Logos/Characterlogo@4x.png" alt="Miroshape Character Floater 1">
+    </div>
+    <div class="bg-decoration-character char-dec-2">
+        <img src="Logos/Characterlogo@4x.png" alt="Miroshape Character Floater 2">
+    </div>
+    <div class="bg-decoration-character char-dec-3">
+        <img src="Logos/Characterlogo@4x.png" alt="Miroshape Character Floater 3">
+    </div>
+    <div class="bg-decoration-character char-dec-4">
+        <img src="Logos/Characterlogo@4x.png" alt="Miroshape Character Floater 4">
+    </div>
+    <div class="bg-decoration-character char-dec-5">
+        <img src="Logos/Characterlogo@4x.png" alt="Miroshape Character Floater 5">
+    </div>
+
+    <!-- Barra de Navegación Fija (Sticky Navbar) -->
+    <header class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="#inicio" class="logo-link">
+                <img src="Logos/SIDE_MIROSHAPES_WHITE.png" alt="Miroshape Studios Logo" class="navbar-logo-img">
+            </a>
+            
+            <nav class="nav-menu" id="nav-menu">
+                <a href="#inicio" class="nav-link active" data-i18n="nav.home">Inicio</a>
+                <a href="#servicios" class="nav-link" data-i18n="nav.services">Servicios</a>
+                <a href="#proyectos" class="nav-link" data-i18n="nav.projects">Proyectos</a>
+                <a href="#nosotros" class="nav-link" data-i18n="nav.about">Nosotros</a>
+                <a href="#contacto" class="nav-link" data-i18n="nav.contact">Contacto</a>
+            </nav>
+            
+            <div class="navbar-actions">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" id="btn-es">ES</button>
+                    <span class="lang-divider">/</span>
+                    <button class="lang-btn" id="btn-en">EN</button>
+                </div>
+                <a href="#contacto" class="btn btn-navbar btn-blue" data-i18n="nav.quote">Cotizar Proyecto</a>
+                
+                <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 1. Inicio / Hero Section -->
+        <section id="inicio" class="hero-section">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="hero-brand-header">
+                        <img src="Logos/TextoMiroShapes.png" alt="Miroshape Studios Text Logo" class="hero-text-logo-img">
+                    </div>
+                    
+                    <h1 class="hero-title" data-i18n="hero.title">IMAGINACIÓN EN 3D CREANDO MUNDOS SIN LÍMITES.</h1>
+                    
+                    <p class="hero-subtitle" data-i18n="hero.subtitle">
+                        En Miroshape Studios damos vida a las ideas de nuestros clientes creando personajes, escenarios, props y animaciones 3D de alta calidad. Desarrollamos contenido visual para videojuegos, realidad virtual (VR), realidad aumentada (AR), producciones animadas, marketing y medios digitales, combinando creatividad, técnica y atención al detalle en cada proyecto.
+                    </p>
+                    
+                    <div class="hero-ctas">
+                        <a href="#contacto" class="btn btn-primary btn-glow-coral btn-animated" data-i18n="hero.btnStart">Iniciar Proyecto</a>
+                        <a href="#proyectos" class="btn btn-secondary btn-glow-teal" data-i18n="hero.btnPortfolio">Ver Portafolio</a>
+                    </div>
+                </div>
+                
+                <div class="hero-interactive">
+                    <div class="mascot-3d-wrapper">
+                        <div class="mascot-3d-hologram"></div>
+                        <div class="mascot-3d-card" id="hero-mascot-card">
+                            <div id="mascot-3d-canvas-container" class="mascot-3d-container"></div>
+                        </div>
+                        <div class="mascot-3d-pedestal"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scroll-down">
+                <a href="#servicios" aria-label="Bajar a Servicios">
+                    <span class="mouse-icon">
+                        <span class="wheel"></span>
+                    </span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 2. Servicios -->
+        <section id="servicios" class="services-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="services.title">LO QUE HACEMOS</h2>
+                </div>
+
+                <div class="services-intro-card">
+                    <p class="services-intro-text" data-i18n="services.intro">
+                        En Miroshape Studios damos vida a las ideas de nuestros clientes creando personajes, props, escenarios, animaciones y contenido digital con calidad profesional. Desarrollamos activos visuales optimizados para videojuegos, realidad virtual (VR), realidad aumentada (AR), producciones animadas, marketing y medios digitales, combinando creatividad, técnica y atención al detalle en cada proyecto.
+                    </p>
+                </div>
+
+                <!-- Pipeline 3D -->
+                <div class="pipeline-wrapper">
+                    <h3 class="pipeline-title" data-i18n="services.pipelineTitle">NUESTRO FLUJO DE PRODUCCIÓN</h3>
+                    <p class="pipeline-subtitle" data-i18n="services.pipelineSub">Conoce las etapas que seguimos para transformar tu idea en un proyecto 3D listo para producción.</p>
+                    
+                    <div class="pipeline-node-editor">
+                        <div class="pipeline-nodes-container">
+                            <div class="pipeline-node active" data-node="modelado">
+                                <span class="node-num">01</span>
+                                <span class="node-name" data-i18n="pipeline.nodes.modelado">Modelado</span>
+                                <div class="node-indicator"></div>
+                                <div class="node-miro-avatar">
+                                    <img src="PipelineMiro/1MODELADO.png" alt="Miro Modelado" class="miro-step-thumb">
+                                </div>
+                            </div>
+                            <div class="pipeline-node" data-node="texturas">
+                                <span class="node-num">02</span>
+                                <span class="node-name" data-i18n="pipeline.nodes.texturas">UVs y Texturas</span>
+                                <div class="node-indicator"></div>
+                                <div class="node-miro-avatar">
+                                    <img src="PipelineMiro/2UVSYTEXTURAS.png" alt="Miro Texturas" class="miro-step-thumb">
+                                </div>
+                            </div>
+                            <div class="pipeline-node" data-node="optimizacion">
+                                <span class="node-num">03</span>
+                                <span class="node-name" data-i18n="pipeline.nodes.optimizacion">Optimización</span>
+                                <div class="node-indicator"></div>
+                                <div class="node-miro-avatar">
+                                    <img src="PipelineMiro/3OPTIMIZACION.png" alt="Miro Optimización" class="miro-step-thumb">
+                                </div>
+                            </div>
+                            <div class="pipeline-node" data-node="rigging">
+                                <span class="node-num">04</span>
+                                <span class="node-name" data-i18n="pipeline.nodes.rigging">Rigging</span>
+                                <div class="node-indicator"></div>
+                                <div class="node-miro-avatar">
+                                    <img src="PipelineMiro/4RIGGING.png" alt="Miro Rigging" class="miro-step-thumb">
+                                </div>
+                            </div>
+                            <div class="pipeline-node" data-node="animacion">
+                                <span class="node-num">05</span>
+                                <span class="node-name" data-i18n="pipeline.nodes.animacion">Animación</span>
+                                <div class="node-indicator"></div>
+                                <div class="node-miro-avatar">
+                                    <video src="PipelineMiro/6Animacion.mp4" autoplay loop muted playsinline class="miro-step-thumb"></video>
+                                </div>
+                            </div>
+                            <div class="pipeline-node" data-node="integracion">
+                                <span class="node-num">06</span>
+                                <span class="node-name" data-i18n="pipeline.nodes.integracion">Integración</span>
+                                <div class="node-indicator"></div>
+                                <div class="node-miro-avatar">
+                                    <img src="PipelineMiro/8INTEGRACION.png" alt="Miro Integración" class="miro-step-thumb">
+                                </div>
+                            </div>
+                            <div class="pipeline-node" data-node="iluminacion">
+                                <span class="node-num">07</span>
+                                <span class="node-name" data-i18n="pipeline.nodes.iluminacion">Iluminación</span>
+                                <div class="node-indicator"></div>
+                                <div class="node-miro-avatar">
+                                    <img src="PipelineMiro/5ILUMINACION.png" alt="Miro Iluminación" class="miro-step-thumb">
+                                </div>
+                            </div>
+                            <div class="pipeline-node" data-node="renderizado">
+                                <span class="node-num">08</span>
+                                <span class="node-name" data-i18n="pipeline.nodes.renderizado">Renderizado</span>
+                                <div class="node-indicator"></div>
+                                <div class="node-miro-avatar">
+                                    <img src="PipelineMiro/7RENDER.png" alt="Miro Render" class="miro-step-thumb">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="pipeline-node-info" id="pipeline-info-panel">
+                            <div class="node-info-layout">
+                                <div class="node-info-text-side">
+                                    <h4 class="node-info-title" id="node-title">Modelado</h4>
+                                    <p class="node-info-text" id="node-description">Creamos personajes, props y escenarios optimizados según las necesidades del proyecto.</p>
+                                </div>
+                                <div class="node-info-img-side">
+                                    <img src="PipelineMiro/1MODELADO.png" alt="Miro Pipeline Stage" id="node-miro-display-img" class="node-info-miro-main">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Proyectos -->
+        <section id="proyectos" class="portfolio-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="projects.title">PROYECTOS</h2>
+                    <p class="section-subtitle-custom" data-i18n="projects.desc">
+                        Descubre algunos de los proyectos en los que hemos participado, creando personajes, escenarios, props y contenido 3D de alta calidad.
+                    </p>
+                </div>
+
+                <div class="portfolio-filters">
+                    <button class="filter-btn active" data-filter="all" data-i18n="portfolio.filterAll">Todos</button>
+                    <button class="filter-btn" data-filter="videojuegos" data-i18n="portfolio.filterGames">🎮 Videojuegos</button>
+                    <button class="filter-btn" data-filter="series" data-i18n="portfolio.filterSeries">🎬 Series Animadas</button>
+                    <button class="filter-btn" data-filter="vr" data-i18n="portfolio.filterVR">🥽 Realidad Virtual (VR)</button>
+                    <button class="filter-btn" data-filter="ar" data-i18n="portfolio.filterAR">📱 Realidad Aumentada (AR)</button>
+                </div>
+
+                <div class="portfolio-grid" id="portfolio-grid">
+                    <!-- Proyecto 1: Tier Haze 1 (Series Animadas) -->
+                    <div class="portfolio-card media-project-card" data-category="series" data-project="tier-haze-1">
+                        <div class="portfolio-image-wrapper">
+                            <img src="Proyectos/Tier haze 1 Corto Animado/Render_Final0001.png" alt="Tier Haze 1" class="portfolio-img">
+                            <div class="play-badge-icon">▶ Ver Proyecto</div>
+                            <div class="portfolio-overlay">
+                                <span class="project-tag">🎬 Series Animadas / Corto Animado</span>
+                                <h4 class="project-title">Tier Haze 1</h4>
+                                <p class="project-description">Modelado de Escenarios/Props, Rigging, Animación, Iluminación y Renderizado.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proyecto 2: Tier Haze 2 (Series Animadas) -->
+                    <div class="portfolio-card media-project-card" data-category="series" data-project="tier-haze-2">
+                        <div class="portfolio-image-wrapper">
+                            <img src="Proyectos/Tierhaze2 Corto Animado/Anim_Haze0468.png" alt="Tier Haze 2" class="portfolio-img">
+                            <div class="play-badge-icon">▶ Ver Secuencia</div>
+                            <div class="portfolio-overlay">
+                                <span class="project-tag">🎬 Series Animadas / Edición Mundial</span>
+                                <h4 class="project-title">Tier Haze 2</h4>
+                                <p class="project-description">Secuencia animada del personaje jugando con balón de fútbol y renderizado HD.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proyecto 3: Interlace Logo (Corto Animado) -->
+                    <div class="portfolio-card media-project-card" data-category="series" data-project="interlace-logo">
+                        <div class="portfolio-image-wrapper">
+                            <img src="Proyectos/Interlace Logo - Corto Animado/Portada.png" alt="Interlace Logo" class="portfolio-img">
+                            <div class="play-badge-icon">▶ Ver Animación</div>
+                            <div class="portfolio-overlay">
+                                <span class="project-tag">🎬 Corto Animado / Identidad 3D</span>
+                                <h4 class="project-title">Interlace Logo</h4>
+                                <p class="project-description">Modelado, texturizado, rigging, animación y renderizado de logo corporativo 3D.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proyecto 4: Room VR (Realidad Virtual) -->
+                    <div class="portfolio-card media-project-card" data-category="vr" data-project="room-vr">
+                        <div class="portfolio-image-wrapper">
+                            <img src="Proyectos/Room VR/1.PNG" alt="Room VR" class="portfolio-img">
+                            <div class="portfolio-overlay">
+                                <span class="project-tag">🥽 Realidad Virtual (VR)</span>
+                                <h4 class="project-title">Room VR</h4>
+                                <p class="project-description">Modelado de props y escenarios, texturizado, iluminación y montaje en Unreal Engine.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proyecto 5: Metroject VR (Realidad Virtual) -->
+                    <div class="portfolio-card media-project-card" data-category="vr" data-project="metroject-vr">
+                        <div class="portfolio-image-wrapper">
+                            <img src="Proyectos/Metroject VR/testanimfacial.0111.png" alt="Metroject VR" class="portfolio-img">
+                            <div class="play-badge-icon">▶ Ver VR Cinemática</div>
+                            <div class="portfolio-overlay">
+                                <span class="project-tag">🥽 Realidad Virtual (VR)</span>
+                                <h4 class="project-title">Metroject VR</h4>
+                                <p class="project-description">Modelado, texturas, rigging, animación, mocap, render y montaje en Unreal Engine.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proyecto 6: El Murmullo de Chiribiquete (Videojuegos) -->
+                    <div class="portfolio-card media-project-card" data-category="videojuegos" data-project="chiribiquete-game">
+                        <div class="portfolio-image-wrapper">
+                            <img src="Proyectos/El murmullo de chiribiquete  VideoJuego/Captura de pantalla 2026-07-21 234702.png" alt="El Murmullo de Chiribiquete" class="portfolio-img">
+                            <div class="play-badge-icon">▶ Ver Video de Juego</div>
+                            <div class="portfolio-overlay">
+                                <span class="project-tag">🎮 Videojuegos / Game Jam</span>
+                                <h4 class="project-title">El Murmullo de Chiribiquete</h4>
+                                <p class="project-description">Modelado de assets, escenarios, propuesta visual y montaje interactivo en Unity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal para Proyectos (Video & Galería) -->
+        <div class="project-modal" id="project-modal">
+            <div class="project-modal-backdrop" id="project-modal-backdrop"></div>
+            <div class="project-modal-content">
+                <button class="project-modal-close" id="project-modal-close" aria-label="Cerrar modal">&times;</button>
+                <div class="project-modal-header">
+                    <span class="project-modal-tag" id="modal-project-tag">🎬 Series Animadas / Corto Animado</span>
+                    <h3 class="project-modal-title" id="modal-project-title">Tier Haze</h3>
+                </div>
+                <div class="project-modal-body">
+                    <div class="project-modal-media" id="modal-media-container">
+                        <video id="modal-video-player" controls poster="Proyectos/Tier haze 1 Corto Animado/Render_Final0001.png" class="project-modal-video">
+                            <source src="Proyectos/Tier haze 1 Corto Animado/Render_Clip.mp4" type="video/mp4">
+                            Tu navegador no soporta la reproducción de video HTML5.
+                        </video>
+                    </div>
+                    <div class="project-modal-scope">
+                        <span class="scope-chip">Modelado de Escenarios y Props</span>
+                        <span class="scope-chip">Rigging</span>
+                        <span class="scope-chip">Animación</span>
+                        <span class="scope-chip">Iluminación</span>
+                        <span class="scope-chip">Renderizado</span>
+                    </div>
+                    <p class="project-modal-desc" id="modal-project-desc">
+                        En <strong>Tier Haze</strong> realizamos la producción del corto animado, encargándonos del modelado 3D de escenarios y props (el personaje ya estaba diseñado previamente), rigging corporal y facial, animación fluida, esquema de iluminación y renderizado final.
+                    </p>
+                    <h4 class="gallery-heading">Galería de Renders Finales <span class="gallery-hint">(Haz clic en una imagen para abrirla en pantalla completa)</span></h4>
+                    <div class="project-modal-gallery" id="modal-gallery-container">
+                        <img src="Proyectos/Tier haze 1 Corto Animado/Render_Final0001.png" alt="Tier Haze Render 1" class="gallery-thumb active" data-index="0">
+                        <img src="Proyectos/Tier haze 1 Corto Animado/Render_Final0041.png" alt="Tier Haze Render 2" class="gallery-thumb" data-index="1">
+                        <img src="Proyectos/Tier haze 1 Corto Animado/Render_Final0224.png" alt="Tier Haze Render 3" class="gallery-thumb" data-index="2">
+                        <img src="Proyectos/Tier haze 1 Corto Animado/Render_Final0237.png" alt="Tier Haze Render 4" class="gallery-thumb" data-index="3">
+                        <img src="Proyectos/Tier haze 1 Corto Animado/Render_Final0301.png" alt="Tier Haze Render 5" class="gallery-thumb" data-index="4">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fullscreen Lightbox para Galería de Imágenes -->
+        <div class="image-lightbox" id="image-lightbox">
+            <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+            <div class="lightbox-content">
+                <button class="lightbox-close" id="lightbox-close" aria-label="Cerrar imagen">&times;</button>
+                <button class="lightbox-prev" id="lightbox-prev" aria-label="Imagen anterior">&#10094;</button>
+                <button class="lightbox-next" id="lightbox-next" aria-label="Imagen siguiente">&#10095;</button>
+                <img src="" alt="Render ampliado" class="lightbox-img" id="lightbox-img">
+                <div class="lightbox-caption" id="lightbox-caption">Render 1 de 5</div>
+            </div>
+        </div>
+
+        <!-- 4. Nosotros Section -->
+        <section id="nosotros" class="about-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="about.title">SOBRE NOSOTROS</h2>
+                    <p class="section-subtitle-custom" data-i18n="about.subtitle">
+                        Combinamos creatividad, innovación y excelencia técnica para desarrollar soluciones 3D de alta calidad.
+                    </p>
+                </div>
+
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="about-emoji-icon">🎨</div>
+                        <h3 data-i18n="about.card1Title">Creatividad e Innovación</h3>
+                        <p data-i18n="about.card1Text">Transformamos ideas en personajes, escenarios, props y experiencias visuales que combinan creatividad, técnica y atención al detalle.</p>
+                    </div>
+
+                    <div class="about-card">
+                        <div class="about-emoji-icon">⚙️</div>
+                        <h3 data-i18n="about.card2Title">Soluciones para Tiempo Real</h3>
+                        <p data-i18n="about.card2Text">Desarrollamos activos optimizados para videojuegos, realidad virtual (VR), realidad aumentada (AR) y otras experiencias interactivas utilizando motores como Unity y Unreal Engine.</p>
+                    </div>
+
+                    <div class="about-card">
+                        <div class="about-emoji-icon">⭐</div>
+                        <h3 data-i18n="about.card3Title">Calidad Profesional</h3>
+                        <p data-i18n="about.card3Text">Cada proyecto es desarrollado con altos estándares de modelado, texturizado, optimización y producción, garantizando resultados listos para su implementación.</p>
+                    </div>
+                </div>
+
+                <!-- Mini párrafo centrado abajo -->
+                <div class="about-footer-note">
+                    <p data-i18n="about.footerNote">
+                        Más de 7 años desarrollando contenido 3D para videojuegos, VR, AR y producciones animadas, colaborando en proyectos que combinan creatividad, optimización y calidad profesional.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Contacto -->
+        <section id="contacto" class="contact-section">
+            <div class="container contact-container">
+                <div class="contact-info">
+                    <h2 class="section-title" data-i18n="contact.title">CONTACTO</h2>
+                    <h3 class="contact-subtitle" data-i18n="contact.subtitle">¿Tienes un proyecto en mente?</h3>
+                    <p class="contact-lead-custom" data-i18n="contact.lead">
+                        Cuéntanos qué necesitas Creamos personajes, escenarios, props, animaciones y activos 3D para videojuegos, VR, AR, producciones animadas y otros proyectos digitales.
+                    </p>
+                    <p class="contact-desc" data-i18n="contact.desc">
+                        Revisaremos tu solicitud y te responderemos lo antes posible con una propuesta personalizada.
+                    </p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-detail-item">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <span>miroshapestudios@gmail.com</span>
+                        </div>
+                        <div class="contact-detail-item">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                            </svg>
+                            <span>Bogotá - Colombia</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper">
+                    <form id="quote-form" class="quote-form" action="#" method="POST">
+                        <div class="form-group">
+                            <label for="form-name" data-i18n="form.nameLabel">Nombre</label>
+                            <input type="text" id="form-name" name="name" required placeholder="Ej. Carlos">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="form-email" data-i18n="form.emailLabel">Email</label>
+                            <input type="email" id="form-email" name="email" required placeholder="carlos@correo.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="form-title" data-i18n="form.titleLabel">Título</label>
+                            <input type="text" id="form-title" name="title" required placeholder="Ej. Producción de Cortometraje Animado">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="form-details" data-i18n="form.detailsLabel">Mensaje</label>
+                            <textarea id="form-details" name="details" rows="5" required placeholder="Describe brevemente tu proyecto, los servicios que necesitas y cualquier detalle que quieras compartir"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block btn-glow-coral btn-animated" id="form-submit-btn" data-i18n="form.submitBtn">
+                            Enviar Solicitud
+                        </button>
+                    </form>
+                    
+                    <div class="form-success-message" id="form-success" style="display: none;">
+                        <div class="success-icon">
+                            <svg viewBox="0 0 24 24" width="64" height="64" stroke="currentColor" stroke-width="2" fill="none">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <h3 data-i18n="form.successTitle">¡Solicitud Recibida!</h3>
+                        <p data-i18n="form.successText">Hemos recibido tu solicitud. Nuestro equipo de Miroshape la analizará y te responderá lo antes posible.</p>
+                        <button class="btn btn-secondary btn-sm" id="btn-reset-form" data-i18n="form.resetBtn">Enviar otra solicitud</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo-container">
+                    <img src="Logos/SIDE_MIROSHAPES_WHITE.png" alt="Miroshape Studios Logo" class="footer-logo-img">
+                </div>
+                <p class="footer-desc" data-i18n="footer.desc">Donde las ideas se transforman en experiencias visuales extraordinarias mediante arte, diseño y animación 3D.</p>
+                <div class="footer-extra">
+                    <p class="footer-phrase" data-i18n="footer.phrase">"Construimos universos, un detalle a la vez."</p>
+                    <p class="footer-location">Bogotá - Colombia 2026</p>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4 data-i18n="footer.navTitle">Navegación</h4>
+                <a href="#inicio" data-i18n="nav.home">Inicio</a>
+                <a href="#servicios" data-i18n="nav.services">Servicios</a>
+                <a href="#proyectos" data-i18n="nav.projects">Proyectos</a>
+                <a href="#nosotros" data-i18n="nav.about">Nosotros</a>
+                <a href="#contacto" data-i18n="nav.contact">Contacto</a>
+            </div>
+            
+            <div class="footer-social">
+                <h4 data-i18n="footer.socialTitle">Síguenos</h4>
+                <div class="social-icons">
+                    <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="social-icon-link">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="https://tiktok.com" target="_blank" aria-label="TikTok" class="social-icon-link">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+                        </svg>
+                    </a>
+                    <a href="https://artstation.com" target="_blank" aria-label="ArtStation" class="social-icon-link">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                            <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                            <polyline points="2 8.5 12 15.5 22 8.5"></polyline>
+                            <line x1="12" y1="15.5" x2="12" y2="22"></line>
+                        </svg>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn" class="social-icon-link">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 Miroshape Studios. <span data-i18n="footer.rights">Todos los derechos reservados.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
