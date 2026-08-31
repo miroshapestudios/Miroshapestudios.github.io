@@ -786,28 +786,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (quoteForm && formSuccess && submitBtn) {
-        quoteForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const originalBtnText = submitBtn.textContent;
+    if (quoteForm && submitBtn) {
+        quoteForm.addEventListener('submit', () => {
             submitBtn.disabled = true;
-            submitBtn.textContent = currentLang === 'es' ? "Procesando Propuesta..." : "Processing Proposal...";
+            submitBtn.textContent = currentLang === 'es' ? "Enviando Solicitud..." : "Sending Request...";
             submitBtn.style.opacity = '0.7';
-
-            setTimeout(() => {
-                quoteForm.style.display = 'none';
-                formSuccess.style.display = 'flex';
-                
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalBtnText;
-                submitBtn.style.opacity = '1';
-                
-                const wrapper = document.querySelector('.contact-form-wrapper');
-                if (wrapper) {
-                    wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }, 1200);
         });
     }
 
@@ -894,13 +877,12 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'Proyecto completo cinemático para VR. Se trabajó el modelado 3D, texturizado, rigging corporal y facial, animación, captura de movimiento (Mocap), renderizado y montaje en Unreal Engine.',
             scope: ['Modelado', 'Texturizado', 'Rigging', 'Animación', 'Mocap (Captura de Movimiento)', 'Renderizado', 'Montaje en Unreal Engine'],
             video: 'Proyectos/Metroject VR/VIDEO_01_NEW.mp4',
-            poster: 'Proyectos/Metroject VR/testanimfacial.0111.png',
+            poster: 'Proyectos/Metroject VR/Render_Metroject (3).png',
             gallery: [
-                'Proyectos/Metroject VR/testanimfacial.0111.png',
-                'Proyectos/Metroject VR/testanimfacial.0000.png',
-                'Proyectos/Metroject VR/testanimfacial.2523.png',
-                'Proyectos/Metroject VR/testanimfacial.2526.png',
-                'Proyectos/Metroject VR/PART_02.0097.jpeg'
+                'Proyectos/Metroject VR/Render_Metroject (3).png',
+                'Proyectos/Metroject VR/Render_Metroject (2).png',
+                'Proyectos/Metroject VR/Render_Metroject (1).png',
+                'Proyectos/Metroject VR/Render_Metroject (1).jpeg'
             ]
         },
         'chiribiquete-game': {
@@ -908,7 +890,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tag: '🎮 Videojuegos / Game Jam',
             description: 'Proyecto de videojuego realizado en un Game Jam junto a grandes artistas 3D y programadores. Se trabajó el modelado de assets, escenarios, propuesta visual integral y montaje interactivo en Unity Engine.',
             scope: ['Modelado de Assets y Escenarios', 'Propuesta Visual', 'Montaje en Unity', 'Game Jam Colaborativo'],
-            video: 'Proyectos/El murmullo de chiribiquete  VideoJuego/El Murmullo del Chiribiquete.mp4',
+            video: 'Proyectos/El murmullo de chiribiquete  VideoJuego/Video_Vr.mp4',
             poster: 'Proyectos/El murmullo de chiribiquete  VideoJuego/Captura de pantalla 2026-07-21 234702.png',
             gallery: [
                 'Proyectos/El murmullo de chiribiquete  VideoJuego/Captura de pantalla 2026-07-21 234702.png',
@@ -925,6 +907,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Proyectos/El murmullo de chiribiquete  VideoJuego/Captura de pantalla 2026-07-21 235145.png',
                 'Proyectos/El murmullo de chiribiquete  VideoJuego/Captura de pantalla 2026-07-21 235248.png',
                 'Proyectos/El murmullo de chiribiquete  VideoJuego/Captura de pantalla 2026-07-21 235314.png'
+            ]
+        },
+        'renders-3d': {
+            title: 'Renders 3D & Iluminación',
+            tag: '🎨 Renderizado 3D / Arte Digital',
+            description: 'Colección especial de renderizados 3D de alta fidelidad, estudio de iluminación ambiental, texturizado PBR fotorrealista y composición visual para personajes, escenarios y props.',
+            scope: ['Modelado 3D', 'Texturizado PBR', 'Iluminación Ambiental', 'Composición Visual', 'Renderizado HD'],
+            video: null,
+            poster: 'Proyectos/Renders/Renders_Apt (1).jpg',
+            gallery: [
+                'Proyectos/Renders/Renders_Apt (1).jpg',
+                'Proyectos/Renders/Renders_Apt (2).jpg',
+                'Proyectos/Renders/Renders_Apt (3).jpg',
+                'Proyectos/Renders/Renders_Apt (4).jpg',
+                'Proyectos/Renders/Renders_Apt (5).jpg',
+                'Proyectos/Renders/Renders_Apt (6).jpg',
+                'Proyectos/Renders/Renders_Apt (7).jpg',
+                'Proyectos/Renders/Renders_Apt (8).jpg',
+                'Proyectos/Renders/Renders_Apt (9).jpg',
+                'Proyectos/Renders/Renders_Apt (10).jpg'
             ]
         }
     };
